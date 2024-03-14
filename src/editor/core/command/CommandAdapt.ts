@@ -119,6 +119,8 @@ export class CommandAdapt {
   }
 
   public paste(payload?: IPasteOption) {
+    console.log(this.draw, 'draw')
+    
     const isReadonly = this.draw.isReadonly()
     if (isReadonly) return
     pasteByApi(this.canvasEvent, payload)
@@ -1191,7 +1193,7 @@ export class CommandAdapt {
     this.tableTool.dispose()
   }
 
-  public mergeTableCell() {
+  public mergeTableCell(getCurrent?: boolean): any {
     const isReadonly = this.draw.isReadonly()
     if (isReadonly) return
     const positionContext = this.position.getPositionContext()
@@ -1269,6 +1271,8 @@ export class CommandAdapt {
         }
       }
     }
+    // 获取选中的单元格
+    if(getCurrent) return rowCol
     // 合并单元格
     const mergeTdIdList: string[] = []
     const anchorTd = rowCol[0][0]
@@ -2369,5 +2373,13 @@ export class CommandAdapt {
 
   public getContainer(): HTMLDivElement {
     return this.draw.getContainer()
+  }
+  public getCurrentValue(): ITd {
+    const positionContext = this.position.getPositionContext()
+    // if (!positionContext.isTable) return {}
+    const { index, tdIndex, trIndex } = positionContext
+    const originalElementList = this.draw.getOriginalElementList()
+    const valueData = originalElementList[index!].trList![trIndex!].tdList[tdIndex!]
+    return valueData
   }
 }

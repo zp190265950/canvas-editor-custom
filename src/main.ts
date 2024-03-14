@@ -1,3 +1,4 @@
+import { ITd } from './editor/interface/table/Td'
 import { commentList, data, options } from './mock'
 import './style.css'
 import prism from 'prismjs'
@@ -62,6 +63,35 @@ window.onload = function () {
     options
   )
   console.log('实例: ', instance)
+  console.log(instance.command.getHTML(), instance.command.getValue())
+  instance.register.contextMenuList([
+    {
+      key: 'addAttr',
+      name: '绑定属性',
+      when: (payload) => {
+        return !payload.isReadonly && payload.isInTable
+      },
+      callback: (command, context) => {
+        console.log(command, context)
+        // command.executeSelectAll()
+        if (context.isCrossRowCol) {
+          const arr = command.executeMergeTableCell(true)
+          console.log(arr)
+          arr?.forEach((a: []) => {
+            a.forEach((item: ITd) => {
+              item.customKey = 'keyCustom'
+            })
+          })
+        } else {
+          const data = command.getCurrentValue()
+          data.customKey = 'keyCustom'
+          // data.value = '阿斯顿发斯蒂芬阿斯蒂芬撒旦法阿斯蒂芬撒旦法阿斯蒂芬阿斯蒂芬阿斯蒂芬'
+        }
+        console.log(command.getValue())
+      }
+    }
+  ])
+  
   // cypress使用
   Reflect.set(window, 'editor', instance)
 

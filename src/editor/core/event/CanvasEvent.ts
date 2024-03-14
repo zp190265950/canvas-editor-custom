@@ -125,6 +125,8 @@ export class CanvasEvent {
 
   public selectAll() {
     const position = this.position.getPositionList()
+    console.log(position, 'position')
+    
     this.range.setRange(0, position.length - 1)
     this.draw.render({
       isSubmitHistory: false,

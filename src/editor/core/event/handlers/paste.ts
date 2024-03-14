@@ -168,7 +168,7 @@ export async function pasteByApi(host: CanvasEvent, options?: IPasteOption) {
   // 从内存粘贴板获取数据
   if (options?.isPlainText) {
     if (clipboardText) {
-      host.input(clipboardText)
+      host.input(clipboardText + 1)
     }
   } else {
     const clipboardData = await navigator.clipboard.read()
@@ -184,13 +184,13 @@ export async function pasteByApi(host: CanvasEvent, options?: IPasteOption) {
         const textBlob = await item.getType('text/plain')
         const text = await textBlob.text()
         if (text) {
-          host.input(text)
+          host.input(text + 1)
         }
       } else if (item.types.includes('text/html') && isHTML) {
         const htmlTextBlob = await item.getType('text/html')
         const htmlText = await htmlTextBlob.text()
         if (htmlText) {
-          pasteHTML(host, htmlText)
+          pasteHTML(host, htmlText + 1)
         }
       } else if (item.types.some(type => type.startsWith('image/'))) {
         const type = item.types.find(type => type.startsWith('image/'))!

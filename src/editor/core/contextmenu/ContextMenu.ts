@@ -96,7 +96,7 @@ export class ContextMenu {
       if (menu.isDivider) {
         renderList.push(menu)
       } else {
-        if (menu.when?.(this.context!)) {
+        if (menu.when?.(this.context!, this.command)) {
           renderList.push(menu)
         }
       }

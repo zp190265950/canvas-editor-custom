@@ -1,3 +1,4 @@
+import { ITd } from './../../../interface/table/Td'
 import { INTERNAL_CONTEXT_MENU_KEY } from '../../../dataset/constant/ContextMenu'
 import { VerticalAlign } from '../../../dataset/enum/VerticalAlign'
 import {
@@ -228,8 +229,24 @@ export const tableMenus: IRegisterContextMenu[] = [
     key: DELETE_ROW_COL,
     i18nPath: 'contextmenu.table.deleteRowCol',
     icon: 'delete-row-col',
-    when: payload => {
-      return !payload.isReadonly && payload.isInTable
+    when: (payload, command) => {
+      const arr = command.executeMergeTableCell(true)
+      console.log(arr, 'arr')
+      let flag = true
+      if (payload.isCrossRowCol) {
+        const arr = command.executeMergeTableCell(true)
+        console.log(arr)
+        flag = !arr.some((a: []) => {
+          return a.some((item: ITd) => {
+            return item.customKey === 'keyCustom'
+          })
+        })
+      } else {
+        const data = command.getCurrentValue()
+        console.log(data)
+        flag = data.customKey !== 'keyCustom'
+      }
+      return flag && !payload.isReadonly && payload.isInTable
     },
     childMenus: [
       {

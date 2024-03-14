@@ -47,7 +47,8 @@ describe('菜单-行处理', () => {
         .click()
         .then(() => {
           const data = editor.command.getValue().data.main
-
+          console.log(data, data[0].rowFlex)
+          
           expect(data[0].rowFlex).to.eq('center')
         })
     })

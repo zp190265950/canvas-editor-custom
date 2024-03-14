@@ -64,6 +64,7 @@ export interface ITableElement {
   trId?: string
   tableId?: string
   conceptId?: string
+  customKey?: string
 }
 
 export type ITable = ITableAttr & ITableElement
